@@ -1,5 +1,6 @@
 {
   "/page": "app/page.js",
-  "/add-post/page": "app/add-post/page.js",
+  "/api/posts/route": "app/api/posts/route.js",
+  "/api/posts/[pid]/route": "app/api/posts/[pid]/route.js",
   "/edit-post/page": "app/edit-post/page.js"
 }
