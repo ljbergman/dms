@@ -33,8 +33,7 @@ function Dms() {
           });
 
           if (res.ok) {
-            window.location.reload();
-            alert("Document deleted!");
+            window.location.reload();          
          } 
 
         }
@@ -73,7 +72,9 @@ function Dms() {
         padding: "20px",
         borderRadius: "6px",
         textAlign: "center",
-        backgroundColor: "#cccccc"
+        backgroundColor: "#cccccc",
+        boxShadow: "rgba(0, 0, 0, 0.30) 1.95px 1.95px 2.6px"
+        
       
     }
 
