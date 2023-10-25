@@ -1,95 +1,162 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
+import { useEffect, useState } from 'react'
+import Main from '@/components/Main'
+import { useRouter } from 'next/navigation'; 
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+function Dms() {
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+  const [posts, setPosts] = useState([]);
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+  const router = useRouter(); 
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
+  useEffect(() => { 
+    const getPost = async () => {
+      const res = await fetch("/api/posts");
+      const posts = await res.json();
+   
+      setPosts(posts);
+    }
+    getPost();  
+  }, [])
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+
+  
+    const handleEdit = (postId) => {
+      router.push("/edit-post/?pid=" + postId);
+    }
+
+        // FOR DELETE
+        const handleDelete = async (postId) => {
+          const res = await fetch("/api/posts/" + postId, {
+             method: "DELETE"
+          });
+
+          if (res.ok) {
+            window.location.reload();
+            alert("Document deleted!");
+         } 
+
+        }
+
+    // FOR EDIT
+    const editClickHandler = ((e) => {
+      handleEdit(e.target.name);
+    }) 
+
+        // FOR DELETE
+        const deleteClickHandler = ((e) => {
+          handleDelete(e.target.name);
+        }) 
+
+  // Document List Styling
+  const documentList = {
+    backgroundColor: "#ffffff",
+    padding: "0px",
+    margin: "0px",
+  }
+
+    // Document Ul Styling
+    const documentUl = {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      listStyle: "none"
+    
+    }
+
+    // Document Li Styling
+    const documentLi = {
+        width: "100%",
+        height: "fit-content",
+        margin: "8px",
+        padding: "20px",
+        borderRadius: "6px",
+        textAlign: "center",
+        backgroundColor: "#cccccc"
+      
+    }
+
+  // Document Title Styling
+  const documentListTitle = {
+    display: "block",
+    paddingBottom: "14px",
+    fontFamily: 'sans-serif, arial, verdana',
+    fontSize: "24px",
+    fontWeight: "bold",
+    color: "#000000",
+  }
+
+
+    // Document Text Styling
+    const documentListText = {
+      display: "block",
+      width: "380px",
+      paddingBottom: "14px",
+      paddingLeft: "24px",
+      paddingRight: "24px",
+      fontFamily: 'sans-serif, arial, verdana',
+      fontWeight: 100,
+      fontSize: "16px",
+      color: "#666666"
+    
+  }
+
+  const documentEditBtn = {
+
+    fontSize: "12px",
+    backgroundColor: "#779B29",
+    color: "#ffffff",
+    border: "0px",
+    borderRadius: "6px",
+    width: "120px",
+    height: "36px",
+    padding: "10px",
+    cursor: "pointer"
+
+  }
+
+  const documentDeleteBtn = {
+
+    fontSize: "12px",
+    backgroundColor: "#A83F30",
+    color: "#ffffff",
+    border: "0px",
+    borderRadius: "6px",
+    width: "120px",
+    height: "36px",
+    padding: "10px",
+    cursor: "pointer"
+
+  }
+
+  const btnDiv = {
+
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+
+
+  }
+
+  return (  <Main>
+            
+            <div style={documentList}>
+            <ul style={documentUl}>
+            {posts.map((post)=>(
+                <li key={post.pid} style={documentLi}>
+                  <span style={documentListTitle}>#{post.pid} - {post.title}</span>
+                  <span style={documentListText}>{post.content.substring(0, 70)}...</span>
+                 <div style={btnDiv}><button style={documentEditBtn} name={post.pid} onClick={editClickHandler}>Edit document</button> <button style={documentDeleteBtn} name={post.pid} onClick={deleteClickHandler}>Delete</button></div>
+                 </li>
+            ))}
+            </ul>
+            </div>
+            </Main>
+         
   )
+
 }
+
+export default Dms;

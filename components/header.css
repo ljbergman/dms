@@ -1,0 +1,15 @@
+.header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 6rem;
+
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 28px;
+    color: #000;
+    background-color: #fff;
+    margin: 0px;
+
+}
