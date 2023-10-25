@@ -1,5 +1,15 @@
-/node_modules
+node_modules/
 .next/
-.env
 .DS_Store
+.env
 .env.local
+.env.*.local
+
+# Ignore log files and backup files
+*.log
+*.bak
+*.swp
+
+# Ignore IDE/editor-specific files or directories
+.vscode/
+.idea/
