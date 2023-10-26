@@ -23,7 +23,6 @@ export default function RootLayout({ children }) {
       </Main>
 
       <Footer/>
-
       </body>
 
     </html>
