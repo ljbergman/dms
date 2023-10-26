@@ -1,10 +1,14 @@
 "use client"
 import { useState } from "react"
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function addPost() {
 
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [post, setPost] = useState({})
+
+    const router = useRouter();
 
     const titleEventHandler = ((event) => {
         setTitle(event.target.value);
@@ -16,30 +20,137 @@ export default function addPost() {
 
     const handleSubmit = async (event) =>  {
          event.preventDefault();
-         const res = await fetch("/api/posts", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({title, content})
-         })
 
-         alert("Ny post tillagd!");
+         // Double check that the fields are not empty
+         if (title!=="" && content !=="") {
+            const res = await fetch("/api/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({title, content})
+            })
 
-         setTitle("");
-         setContent("");
+            if (res.ok) {
+                setTitle("");
+                setContent("");
+                router.push("/");
+            } 
+        } else {
+            alert("Fields are empty!")
+        }
+    }
+
+
+        // Document Edit Container Styling
+        const documentEdit = {
+            backgroundColor: "#ffffff",
+            padding: "0px",
+            margin: "0px",
+        }     
+        
+        // Document Edit Input
+        const documentEditInput = {
+            display: "block",
+            width: "350px",
+            height: "38px",
+            fontFamily: "sans-serif, arial, verdana",
+            fontSize: "12px",
+            padding: "20px",
+            border: "1px solid #aaaaaa",
+            borderRadius: "6px",
+            marginBottom: "10px",
+            backgroundColor: "#ffffff",
+            color: "#000000"
+            }    
+
+        // Document Edit TextArea
+        const documentEditTA = {
+            display: "block",
+            width: "350px",
+            height: "406px",
+            fontFamily: "sans-serif, arial, verdana",
+            fontSize: "12px",
+            padding: "20px",
+            border: "1px solid #aaaaaa",
+            borderRadius: "6px",
+            backgroundColor: "#ffffff",
+            color: "#000000"
+            }
+
+        // Document Ul Styling
+        const documentUl = {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            listStyle: "none"
+        
+        }     
+
+    // Document Li Styling
+    const documentLi = {
+        width: "100%",
+        height: "fit-content",
+        margin: "8px",
+        padding: "20px",
+        borderRadius: "6px",
+        textAlign: "center",
+        backgroundColor: "#cccccc",
+        boxShadow: "rgba(0, 0, 0, 0.30) 1.95px 1.95px 2.6px"
+        
+    }
+
+    // Document Label Styling
+    const documentLabel = {
+        display: "block",
+        fontFamily: "sans-serif, arial, verdana",
+        fontSize: "20px",
+        textAlign: "center",
+        color: "#000000"
+    }   
+
+
+    const documentSaveBtn = {
+
+    fontSize: "12px",
+    backgroundColor: "#779B29",
+    color: "#ffffff",
+    border: "0px",
+    borderRadius: "6px",
+    width: "120px",
+    height: "36px",
+    padding: "10px",
+    cursor: "pointer"
 
     }
 
+
     return (
-        <div style={{color: "red", display: "flex", flexDirection: "column", width: "320px"}}>
-            <h1>Create new document</h1>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Title" value={title} onChange={titleEventHandler}/> 
-                <textarea placeholder="Content" value={content} onChange={contentEventHandler}/><br/>
-                <button type="submit">Save</button>
-            </form> 
+
+        <div style={documentEdit}>
+
+        {post ? (
+
+        <div>
+        <form onSubmit={handleSubmit}>
+        <ul style={documentUl}>
+        <li style={documentLi}>
+            <label style={documentLabel}>Document Title</label>
+            <input style={documentEditInput} type="text" onChange={titleEventHandler}/> 
+            <label style={documentLabel}>Text Content</label>
+            <textarea style={documentEditTA} onChange={contentEventHandler}/><br/>
+            <button style={documentSaveBtn} type="submit">Create document</button>
+        </li>
+        </ul>
+        </form> 
         </div>
+
+        ) : (
+            <div>Loading...</div>
+        )}
+
+    </div>
+
     )
 
 }
