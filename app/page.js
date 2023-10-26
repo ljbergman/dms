@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import Main from '@/components/Main'
 import { useRouter } from 'next/navigation'; 
+import { format } from 'date-fns';
 
 
 function Dms() {
@@ -20,7 +21,9 @@ function Dms() {
     getPost();  
   }, [])
 
-
+  const handleShow = (postId) => {
+    router.push("/show-post/?pid=" + postId);
+  }
   
     const handleEdit = (postId) => {
       router.push("/edit-post/?pid=" + postId);
@@ -38,8 +41,14 @@ function Dms() {
 
         }
 
+    // FOR SHOW
+    const showClickHandler = ((e) => {
+      handleShow(e.target.name);
+    }) 
+
     // FOR EDIT
     const editClickHandler = ((e) => {
+      
       handleEdit(e.target.name);
     }) 
 
@@ -83,7 +92,7 @@ function Dms() {
     display: "block",
     paddingBottom: "14px",
     fontFamily: 'sans-serif, arial, verdana',
-    fontSize: "24px",
+    fontSize: "20px",
     fontWeight: "bold",
     color: "#000000",
   }
@@ -103,10 +112,25 @@ function Dms() {
     
   }
 
+
   const documentEditBtn = {
 
     fontSize: "12px",
     backgroundColor: "#779B29",
+    color: "#ffffff",
+    border: "0px",
+    borderRadius: "6px",
+    width: "120px",
+    height: "36px",
+    padding: "10px",
+    cursor: "pointer"
+
+  }
+
+  const documentShowBtn = {
+
+    fontSize: "12px",
+    backgroundColor: "#6178C8",
     color: "#ffffff",
     border: "0px",
     borderRadius: "6px",
@@ -141,18 +165,30 @@ function Dms() {
 
   }
 
+  function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    const formattedDate = format(date, 'yyyy-MM-dd');
+    return formattedDate;
+  }
+
+
   return (  <Main>
             
             <div style={documentList}>
+            {posts ? (
             <ul style={documentUl}>
             {posts.map((post)=>(
                 <li key={post.pid} style={documentLi}>
-                  <span style={documentListTitle}>#{post.pid} - {post.title}</span>
+                  <span style={documentListTitle}>{formatTimestamp(post.date)} - {post.title}</span>
                   <span style={documentListText}>{post.content.substring(0, 70)}...</span>
-                 <div style={btnDiv}><button style={documentEditBtn} name={post.pid} onClick={editClickHandler}>Edit document</button> <button style={documentDeleteBtn} name={post.pid} onClick={deleteClickHandler}>Delete</button></div>
+                 <div style={btnDiv}><button style={documentEditBtn} name={post.pid} onClick={editClickHandler}>Edit</button><button style={documentShowBtn} name={post.pid} onClick={showClickHandler}>Open</button><button style={documentDeleteBtn} name={post.pid} onClick={deleteClickHandler}>Delete</button></div>
                  </li>
+                  
             ))}
             </ul>
+              ) : (
+                  <div>Loading...</div>
+              )}
             </div>
             </Main>
          

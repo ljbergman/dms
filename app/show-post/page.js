@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function addPost() {
@@ -7,46 +7,34 @@ export default function addPost() {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [post, setPost] = useState({})
-    const [preview, setPreview] = useState(false)
+    const [preview, setPreview] = useState(true)
 
     const router = useRouter();
 
-    const titleEventHandler = ((event) => {
-        setTitle(event.target.value);
+    const closePreview = ((event) => {
+        router.push("/");
     }) 
 
-    const contentEventHandler = ((event) => {
-        setContent(event.target.value);
-    }) 
+    const searchParams = useSearchParams();
+    const postId = searchParams.get("pid");
 
-    const handlePreview = ((event) => {
-
-        setPreview(!preview)
-    }) 
-
-    const handleSubmit = async (event) =>  {
-         event.preventDefault();
-
-         // Double check that the fields are not empty
-         if (title!=="" && content !=="") {
-            const res = await fetch("/api/posts", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({title, content})
-            })
+    useEffect(() => {
+        const getPost = async () => {
+             const res = await fetch("api/posts/" + postId);
+             const data = await res.json();
+           
+             setPost(data[0]);
 
             if (res.ok) {
-                setTitle("");
-                setContent("");
-                router.push("/");
-            } 
-        } else {
-            alert("Fields are empty!")
-        }
-    }
+                setTitle(data[0].title);
+                setContent(data[0].content);
+            }
 
+        }
+        if (postId) getPost();
+
+
+    }, [postId])
 
         // Document Edit Container Styling
         const documentEdit = {
@@ -154,7 +142,7 @@ export default function addPost() {
     
         }
 
-        const documentPreviewBtnClose = {
+    const documentPreviewBtnClose = {
 
             fontSize: "12px",
             backgroundColor: "#777777",
@@ -166,7 +154,7 @@ export default function addPost() {
             padding: "10px",
             cursor: "pointer"
         
-            } 
+        }         
 
     const documentCreateBtn = {
 
@@ -196,7 +184,6 @@ export default function addPost() {
         {post ? (
 
         <div>
-        <form onSubmit={handleSubmit}>
         <ul style={documentUl}>
         <li style={documentLi}>
 
@@ -205,25 +192,16 @@ export default function addPost() {
                 <label style={documentPreviewTitle}>{title}</label><br/>
                 <div style={documentPreviewContent}>{content}</div><br/>
                 <div style={btnDiv}>
-                <button style={documentPreviewBtnClose} onClick={handlePreview}>Close Preview</button>
+                <button style={documentPreviewBtnClose} onClick={closePreview}>Close Document</button>
                 </div>
             </div>
       ) : (
-        <div>
-            <label style={documentLabel}>Document Title</label>
-            <input style={documentEditInput} defaultValue={title} type="text" onChange={titleEventHandler}/> 
-            <label style={documentLabel}>Text Content</label>
-            <textarea style={documentEditTA} defaultValue={content} onChange={contentEventHandler}/><br/>
-            <div style={btnDiv}>
-            <button style={documentPreviewBtn} onClick={handlePreview}>Preview document</button>
-            <button style={documentCreateBtn} type="submit">Create document</button>
-            </div>
-        </div>
+        <div></div>
       )}
 
         </li>
         </ul>
-        </form> 
+        
         </div>
 
         ) : (

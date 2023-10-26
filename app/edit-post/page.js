@@ -7,12 +7,13 @@ export default function editPost() {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [post, setPost] = useState({})
+    const [preview, setPreview] = useState(false)
 
     const router = useRouter();
 
     const searchParams = useSearchParams();
     const postId = searchParams.get("pid");
-    console.log("post id: ", postId);
+  
 
     useEffect(() => {
         const getPost = async () => {
@@ -40,6 +41,10 @@ export default function editPost() {
 
     const contentEventHandler = ((event) => {
         setContent(event.target.value);
+    }) 
+
+    const handlePreview = ((event) => {
+        setPreview(!preview)
     }) 
 
     const handleSubmit = async (event) =>  {
@@ -102,6 +107,22 @@ export default function editPost() {
             color: "#000000"
           }
 
+        // Document Preview Content
+        const documentPreviewContent= {
+            display: "block",
+            width: "350px",
+            height: "406px",
+            fontFamily: "sans-serif, arial, verdana",
+            fontSize: "12px",
+            padding: "20px",
+            border: "1px solid #aaaaaa",
+            borderRadius: "6px",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+            textAlign: "left"
+            }
+
+
         // Document Ul Styling
         const documentUl = {
             display: "flex",
@@ -133,6 +154,43 @@ export default function editPost() {
         color: "#000000"
     }   
 
+   // Document Preview Title Styling
+   const documentPreviewTitle = {
+    display: "block",
+    fontFamily: "sans-serif, arial, verdana",
+    fontSize: "20px",
+    textAlign: "center",
+    color: "#000000",
+    textAlign: "center"
+}  
+
+const documentPreviewBtn = {
+
+    fontSize: "12px",
+    backgroundColor: "#6178C8",
+    color: "#ffffff",
+    border: "0px",
+    borderRadius: "6px",
+    width: "120px",
+    height: "36px",
+    padding: "10px",
+    cursor: "pointer"
+
+    }   
+
+    const documentPreviewBtnClose = {
+
+        fontSize: "12px",
+        backgroundColor: "#777777",
+        color: "#ffffff",
+        border: "0px",
+        borderRadius: "6px",
+        width: "120px",
+        height: "36px",
+        padding: "10px",
+        cursor: "pointer"
+    
+        } 
 
   const documentSaveBtn = {
 
@@ -148,6 +206,13 @@ export default function editPost() {
 
   }
 
+  const btnDiv = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+  }  
+
     return (
         <div style={documentEdit}>
             {post ? (
@@ -155,11 +220,37 @@ export default function editPost() {
             <form onSubmit={handleSubmit}>
             <ul style={documentUl}>
             <li style={documentLi}>
-                <label style={documentLabel}>Document Title</label>
-                <input style={documentEditInput} type="text" defaultValue={post.title} onChange={titleEventHandler}/> 
-                <label style={documentLabel}>Text Content</label>
-                <textarea style={documentEditTA} defaultValue={post.content} onChange={contentEventHandler}/><br/>
+
+            {preview ? (
+
+            <div>
+                <label style={documentPreviewTitle}>{title}</label><br/>
+                <div style={documentPreviewContent}>{content}</div><br/>
+                <div style={btnDiv}>
+                <button style={documentPreviewBtnClose} onClick={handlePreview}>Close Preview</button>
+                </div>
+            </div>
+
+      ) : (
+
+        <div>
+
+            <label style={documentLabel}>Document Title</label>
+            <input style={documentEditInput} type="text" defaultValue={title || post.title} onChange={titleEventHandler}/> 
+            <label style={documentLabel}>Text Content</label>
+            <textarea style={documentEditTA} defaultValue={content || post.content} onChange={contentEventHandler}/><br/>
+                
+            <div style={btnDiv}>
+                <button style={documentPreviewBtn} onClick={handlePreview}>Preview document</button>
                 <button  style={documentSaveBtn} type="submit">Save changes</button>
+            </div>
+
+        </div>
+
+      )}
+
+
+
             </li>
             </ul>
             </form> 
