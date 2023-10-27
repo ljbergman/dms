@@ -171,13 +171,15 @@ function Dms() {
     return formattedDate;
   }
 
+  // Show the latest edited/created document at the top
+  const reversedDocs = posts.slice().reverse();
 
   return (  <Main>
             
             <div style={documentList}>
             {posts ? (
             <ul style={documentUl}>
-            {posts.map((post)=>(
+            {reversedDocs.map((post)=>(
                 <li key={post.pid} style={documentLi}>
                   <span style={documentListTitle}>{formatTimestamp(post.date)} - {post.title}</span>
                   <span style={documentListText}>{post.content.substring(0, 70)}...</span>
