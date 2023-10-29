@@ -1,6 +1,8 @@
 "use client"
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
+import QEditor from '@/components/QEditor';
+import './page.css';
 
 export default function editPost() {
 
@@ -40,10 +42,11 @@ export default function editPost() {
     }) 
 
     const contentEventHandler = ((event) => {
-        setContent(event.target.value);
+        setContent(event);
     }) 
 
     const handlePreview = ((event) => {
+        event.preventDefault();
         setPreview(!preview)
     }) 
 
@@ -114,7 +117,7 @@ export default function editPost() {
             height: "406px",
             fontFamily: "sans-serif, arial, verdana",
             fontSize: "12px",
-            padding: "20px",
+            padding: "30px",
             border: "1px solid #aaaaaa",
             borderRadius: "6px",
             backgroundColor: "#ffffff",
@@ -225,7 +228,7 @@ const documentPreviewBtn = {
 
             <div>
                 <label style={documentPreviewTitle}>{title}</label><br/>
-                <div style={documentPreviewContent}>{content}</div><br/>
+                <div style={documentPreviewContent} dangerouslySetInnerHTML={{ __html: content }} className="html-content"/><br/>
                 <div style={btnDiv}>
                 <button style={documentPreviewBtnClose} onClick={handlePreview}>Close Preview</button>
                 </div>
@@ -238,8 +241,9 @@ const documentPreviewBtn = {
             <label style={documentLabel}>Document Title</label>
             <input style={documentEditInput} type="text" defaultValue={title || post.title} onChange={titleEventHandler}/> 
             <label style={documentLabel}>Text Content</label>
-            <textarea style={documentEditTA} defaultValue={content || post.content} onChange={contentEventHandler}/><br/>
-                
+            
+            <QEditor onChange={contentEventHandler} value={content || post.content}/>
+
             <div style={btnDiv}>
                 <button style={documentPreviewBtn} onClick={handlePreview}>Preview document</button>
                 <button  style={documentSaveBtn} type="submit">Save changes</button>
