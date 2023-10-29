@@ -1,11 +1,13 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
+import './page.css';
 
 export default function addPost() {
 
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [date, setDate] = useState("")
     const [post, setPost] = useState({})
     const [preview, setPreview] = useState(true)
 
@@ -28,6 +30,7 @@ export default function addPost() {
             if (res.ok) {
                 setTitle(data[0].title);
                 setContent(data[0].content);
+                setDate(data[0].date);
             }
 
         }
@@ -79,7 +82,7 @@ export default function addPost() {
             height: "406px",
             fontFamily: "sans-serif, arial, verdana",
             fontSize: "12px",
-            padding: "20px",
+            padding: "30px",
             border: "1px solid #aaaaaa",
             borderRadius: "6px",
             backgroundColor: "#ffffff",
@@ -127,6 +130,16 @@ export default function addPost() {
         color: "#000000",
         textAlign: "center"
     }  
+
+        // Document Preview Time Styling
+        const documentPreviewTime = {
+            display: "block",
+            fontFamily: "sans-serif, arial, verdana",
+            fontSize: "12px",
+            textAlign: "center",
+            color: "#666666",
+            textAlign: "center"
+        }  
 
     const documentPreviewBtn = {
 
@@ -177,6 +190,8 @@ export default function addPost() {
         width: "100%",
       }
 
+
+
     return (
 
         <div style={documentEdit}>
@@ -190,7 +205,8 @@ export default function addPost() {
         {preview ? (
             <div>
                 <label style={documentPreviewTitle}>{title}</label><br/>
-                <div style={documentPreviewContent}>{content}</div><br/>
+                <div style={documentPreviewContent} dangerouslySetInnerHTML={{ __html: content }} className="html-content"/><br/>
+                <label style={documentPreviewTime}>Timestamp: {date} (last time edited)</label><br/>
                 <div style={btnDiv}>
                 <button style={documentPreviewBtnClose} onClick={closePreview}>Close Document</button>
                 </div>

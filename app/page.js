@@ -182,7 +182,6 @@ function Dms() {
             {reversedDocs.map((post)=>(
                 <li key={post.pid} style={documentLi}>
                   <span style={documentListTitle}>{formatTimestamp(post.date)} - {post.title}</span>
-                  <span style={documentListText}>{post.content.substring(0, 70)}...</span>
                  <div style={btnDiv}><button style={documentEditBtn} name={post.pid} onClick={editClickHandler}>Edit</button><button style={documentShowBtn} name={post.pid} onClick={showClickHandler}>Open</button><button style={documentDeleteBtn} name={post.pid} onClick={deleteClickHandler}>Delete</button></div>
                  </li>
                   
