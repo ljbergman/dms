@@ -21,7 +21,7 @@ Before you begin, ensure you have Node.js and npm installed on your system.
 2. Create the dms database on the MySQL Server (for example using PhpMyAdmin) and set your own username and password.
 3. Import our posts table (posts.sql) in the dms database or run the following SQL Query:
 
-  ```plaintext
+```plaintext
 CREATE TABLE `posts` (
   `pid` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
@@ -35,6 +35,7 @@ ALTER TABLE `posts`
 
 ALTER TABLE `posts`
   MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+```
 
 4. Make sure to set the correct settings for your MySQL Database in your .env.local file, including your username and password from step 2 above.
 
@@ -44,6 +45,7 @@ MYSQL_PORT=xxx
 MYSQL_DATABASE=xxx
 MYSQL_USER=xxx  
 MYSQL_PASSWORD=xxx
+```
 
 5. Start the MySQL Server.
 
