@@ -53,6 +53,6 @@ npm run dev
 
 http://localhost:3000/
 
-## This project is still under development. New featurs will be added in the near future.
+### This project is still under development. New featurs will be added in the near future.
 
 
