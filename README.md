@@ -11,9 +11,10 @@ Before you begin, ensure you have Node.js and npm installed on your system.
 
 1. Clone the repository:
    git clone https://github.com/ljbergman/dms
-   cd dms
 
-2. npm install
+2. cd dms
+
+3. npm install
 
 ## Development usage
 
@@ -57,6 +58,6 @@ npm run dev
 
 http://localhost:3000/
 
-### This project is still under development. New features will be added in the near future.
+### This project is still under development. It worked well during initial testing, but bugs may still exist. New features will be added in the near future.
 
 
