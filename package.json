@@ -1,6 +1,6 @@
 {
   "name": "dms",
-  "version": "0.8.2",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,7 +14,6 @@
     "next": "13.5.5",
     "react": "^18",
     "react-dom": "^18",
-    "react-draft-wysiwyg": "^1.15.0",
     "react-quill": "^2.0.0"
   }
 }
