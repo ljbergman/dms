@@ -3,7 +3,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.1-brightgreen)
 ![License](https://img.shields.io/badge/license-Private-blue)
 
-J-DMS (J Document Management System) is a project built with Next.js (with API routes), React, Mysql and React Quill, with a focus on very basic document management stored in a MySQL Database.
+J-DMS (J Document Management System) is a project built with Next.js (with API routes), React, Mysql and React Quill, with a focus on very basic document management (WYSIWYG/html) stored in a MySQL Database.
 
 ## Installation
 
