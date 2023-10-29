@@ -54,7 +54,7 @@ MYSQL_PASSWORD=xxx
 
 npm run dev
 
-7. Default port is 30000, so you should be able to access it with:
+7. Default port is 3000, so you should be able to access it with:
 
 http://localhost:3000/
 
